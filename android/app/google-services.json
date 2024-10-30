@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "130833815850",
+    "project_id": "badmintonapp-11821",
+    "storage_bucket": "badmintonapp-11821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130833815850:android:86ff356950e834e4d4e653",
+        "android_client_info": {
+          "package_name": "com.example.shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkW2sz_2WmvZRXyzLLXYCPIB5iDncE9Io"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
