@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../network_image_with_loader.dart';
+import 'package:intl/intl.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -22,12 +23,16 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formattedPrice = NumberFormat("#,##0", "en_US").format(price);
+    final formattedDiscountPrice = priceAfetDiscount != null
+        ? NumberFormat("#,##0", "en_US").format(priceAfetDiscount)
+        : null;
     return OutlinedButton(
       onPressed: press,
       style: OutlinedButton.styleFrom(
           minimumSize: const Size(140, 220),
           maximumSize: const Size(140, 220),
-          padding: const EdgeInsets.all(8)),
+          padding: const EdgeInsets.all(4)),
       child: Column(
         children: [
           AspectRatio(
@@ -37,11 +42,11 @@ class ProductCard extends StatelessWidget {
                 NetworkImageWithLoader(image, radius: defaultBorderRadious),
                 if (dicountpercent != null)
                   Positioned(
-                    right: defaultPadding / 2,
-                    top: defaultPadding / 2,
+                    right: defaultPadding / 4,
+                    top: defaultPadding / 4,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding / 2),
+                          horizontal: 4),
                       height: 16,
                       decoration: const BoxDecoration(
                         color: errorColor,
@@ -63,7 +68,7 @@ class ProductCard extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: defaultPadding / 2, vertical: defaultPadding / 2),
+                  horizontal: defaultPadding / 4, vertical: defaultPadding / 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,7 +79,7 @@ class ProductCard extends StatelessWidget {
                         .bodyMedium!
                         .copyWith(fontSize: 10),
                   ),
-                  const SizedBox(height: defaultPadding / 2),
+                  const SizedBox(height: 4),
                   Text(
                     title,
                     maxLines: 2,
@@ -86,19 +91,10 @@ class ProductCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   priceAfetDiscount != null
-                      ? Row(
+                      ? Column(
                           children: [
                             Text(
-                              "\$$priceAfetDiscount",
-                              style: const TextStyle(
-                                color: Color(0xFF31B0D8),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(width: defaultPadding / 4),
-                            Text(
-                              "\$$price",
+                              "$formattedPrice VND",
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
@@ -108,10 +104,19 @@ class ProductCard extends StatelessWidget {
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
+                            const SizedBox(height: 4),
+                            Text(
+                              "$formattedDiscountPrice VND",
+                              style: const TextStyle(
+                                color: Color(0xFF31B0D8),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                              ),
+                            ),
                           ],
                         )
                       : Text(
-                          "\$$price",
+                          "$formattedPrice VND",
                           style: const TextStyle(
                             color: Color(0xFF31B0D8),
                             fontWeight: FontWeight.w500,

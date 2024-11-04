@@ -55,7 +55,8 @@ class PopularProducts extends StatelessWidget {
                           : 0,
                     ),
                     child: ProductCard(
-                      imageURL: product.image,
+                      image: product.imageURL[0],
+                      brandName: product.brandName,
                       title: product.title,
                       price: product.price,
                       priceAfetDiscount: product.priceAfetDiscount,
@@ -78,54 +79,3 @@ class PopularProducts extends StatelessWidget {
     );
   }
 }
-
-// class PopularProducts extends StatelessWidget {
-//   const PopularProducts({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const SizedBox(height: defaultPadding / 2),
-//         Padding(
-//           padding: const EdgeInsets.all(defaultPadding),
-//           child: Text(
-//             "Phổ biến",
-//             style: Theme.of(context).textTheme.titleSmall,
-//           ),
-//         ),
-//         SizedBox(
-//           height: 220,
-//           child: ListView.builder(
-//             scrollDirection: Axis.horizontal,
-//             // Find demoPopularProducts on models/ProductModel.dart
-//             itemCount: demoPopularProducts.length,
-//             itemBuilder: (context, index) => Padding(
-//               padding: EdgeInsets.only(
-//                 left: defaultPadding,
-//                 right: index == demoPopularProducts.length - 1
-//                     ? defaultPadding
-//                     : 0,
-//               ),
-//               child: ProductCard(
-//                 image: demoPopularProducts[index].image,
-//                 brandName: demoPopularProducts[index].brandName,
-//                 title: demoPopularProducts[index].title,
-//                 price: demoPopularProducts[index].price,
-//                 priceAfetDiscount: demoPopularProducts[index].priceAfetDiscount,
-//                 dicountpercent: demoPopularProducts[index].dicountpercent,
-//                 press: () {
-//                   Navigator.pushNamed(context, productDetailsScreenRoute,
-//                       arguments: index.isEven);
-//                 },
-//               ),
-//             ),
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }

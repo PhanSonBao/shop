@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/entry_point.dart';
 
 import 'screen_export.dart';
+import 'package:shop/models/products_model.dart';
 
 // Yuo will get 50+ screens and more once you have the full template
 // 🔗 Full template: https://theflutterway.gumroad.com/l/fluttershop
@@ -129,11 +130,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     builder: (context) => const SetupFaceIdScreen(),
     //   );
     case productDetailsScreenRoute:
+      final product = settings.arguments as ProductsModel;
+      final productId = product.id;
       return MaterialPageRoute(
-        builder: (context) {
-          bool isProductAvailable = settings.arguments as bool? ?? true;
-          return ProductDetailsScreen(isProductAvailable: isProductAvailable);
-        },
+        builder: (context) => ProductDetailsScreen(productId: productId),
       );
     case productReviewsScreenRoute:
       return MaterialPageRoute(

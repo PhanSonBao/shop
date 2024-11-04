@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../network_image_with_loader.dart';
+import 'package:intl/intl.dart';
 
 class SecondaryProductCard extends StatelessWidget {
   const SecondaryProductCard({
@@ -25,6 +26,10 @@ class SecondaryProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formattedPrice = NumberFormat("#,##0", "en_US").format(price);
+    final formattedDiscountPrice = priceAfetDiscount != null
+        ? NumberFormat("#,##0", "en_US").format(priceAfetDiscount)
+        : null;
     return OutlinedButton(
       onPressed: () {},
       style: style ??
@@ -93,7 +98,7 @@ class SecondaryProductCard extends StatelessWidget {
                       ? Row(
                           children: [
                             Text(
-                              "\$$priceAfetDiscount",
+                              "$formattedDiscountPrice",
                               style: const TextStyle(
                                 color: Color(0xFF31B0D8),
                                 fontWeight: FontWeight.w500,
@@ -102,7 +107,7 @@ class SecondaryProductCard extends StatelessWidget {
                             ),
                             const SizedBox(width: defaultPadding / 4),
                             Text(
-                              "\$$price",
+                              "$formattedPrice VND",
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
@@ -115,7 +120,7 @@ class SecondaryProductCard extends StatelessWidget {
                           ],
                         )
                       : Text(
-                          "\$$price",
+                          "$formattedPrice VND",
                           style: const TextStyle(
                             color: Color(0xFF31B0D8),
                             fontWeight: FontWeight.w500,
