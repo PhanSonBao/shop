@@ -40,7 +40,7 @@ class BannerMStyle1 extends StatelessWidget {
               ),
               const Spacer(),
               const Text(
-                "Shop now",
+                "Mua ngay",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

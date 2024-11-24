@@ -16,7 +16,6 @@ class _EntryPointState extends State<EntryPoint> {
     HomeScreen(),
     DiscoverScreen(),
     BookmarkScreen(),
-    // EmptyCartScreen(), // if Cart is empty
     CartScreen(),
     ProfileScreen(),
   ];
@@ -117,30 +116,30 @@ class _EntryPointState extends State<EntryPoint> {
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Shop.svg"),
               activeIcon: svgIcon("assets/icons/Shop.svg", color: primaryColor),
-              label: "Shop",
+              label: "Trang chủ",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Category.svg"),
               activeIcon:
                   svgIcon("assets/icons/Category.svg", color: primaryColor),
-              label: "Discover",
+              label: "Khám Phá",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bookmark.svg"),
               activeIcon:
                   svgIcon("assets/icons/Bookmark.svg", color: primaryColor),
-              label: "Bookmark",
+              label: "Yêu thích",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Bag.svg"),
               activeIcon: svgIcon("assets/icons/Bag.svg", color: primaryColor),
-              label: "Cart",
+              label: "Giỏ hàng",
             ),
             BottomNavigationBarItem(
               icon: svgIcon("assets/icons/Profile.svg"),
               activeIcon:
                   svgIcon("assets/icons/Profile.svg", color: primaryColor),
-              label: "Profile",
+              label: "Tài khoản",
             ),
           ],
         ),

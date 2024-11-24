@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:shop/components/buy_full_ui_kit.dart';
 import 'package:shop/components/cart_button.dart';
@@ -29,6 +31,67 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  bool isBookmarked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkBookmarkStatus();
+  }
+
+  Future<void> checkBookmarkStatus() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final userDoc =
+        FirebaseFirestore.instance.collection('Users').doc(user.uid);
+
+    try {
+      final userSnapshot = await userDoc.get();
+      final List<String> bookmarks =
+          List<String>.from(userSnapshot.data()?['bookmarks'] ?? []);
+
+      setState(() {
+        isBookmarked = bookmarks.contains(widget.productId);
+      });
+    } catch (e) {
+      debugPrint('Error checking bookmark status: $e');
+    }
+  }
+
+  Future<void> toggleBookmark(String productId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final userDoc =
+        FirebaseFirestore.instance.collection('Users').doc(user.uid);
+
+    try {
+      final userSnapshot = await userDoc.get();
+
+      List<String> currentBookmarks =
+          List<String>.from(userSnapshot.data()?['bookmarks'] ?? []);
+
+      if (currentBookmarks.contains(productId)) {
+        // Remove the bookmark
+        currentBookmarks.remove(productId);
+        setState(() {
+          isBookmarked = false;
+        });
+      } else {
+        // Add the bookmark
+        currentBookmarks.add(productId);
+        setState(() {
+          isBookmarked = true;
+        });
+      }
+
+      await userDoc.update({'bookmarks': currentBookmarks});
+    } catch (e) {
+      debugPrint('Error toggling bookmark: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -52,14 +115,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         final productData = snapshot.data!.data() as Map<String, dynamic>;
 
         return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () => toggleBookmark(widget.productId),
+                icon: SvgPicture.asset(
+                  isBookmarked
+                      ? "assets/icons/Bookmark_fill.svg"
+                      : "assets/icons/Bookmark.svg",
+                      color: isBookmarked ? Colors.red : Theme.of(context).iconTheme.color,
+                ),
+              ),
+            ],
+          ),
           bottomNavigationBar: productData['isAvailable'] == true
               ? CartButton(
                   price: productData['price'].toDouble(),
+                  priceAfterDiscount:
+                      productData['priceAfterDiscount']?.toDouble(),
                   press: () {
                     customModalBottomSheet(
                       context,
                       height: MediaQuery.of(context).size.height * 0.92,
-                      child: const ProductBuyNowScreen(),
+                      child: ProductBuyNowScreen(productId: widget.productId),
                     );
                   },
                 )
@@ -70,14 +152,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
-                // ... (keep the SliverAppBar as is)
                 ProductImages(
                   images: List<String>.from(productData['imageURL']),
                 ),
                 ProductInfo(
-                  brand: productData['brandName'],
+                  brand: productData['brandName']?? 'Couple TX',
                   title: productData['title'],
-                  isAvailable: productData['isAvailable'],
+                  isAvailable: productData['isAvailable'] ?? false,
                   description: productData['description'],
                   rating: 5,
                   numOfReviews: 0,
@@ -85,7 +166,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 // ... (keep the rest of the slivers as is)
                 ProductListTile(
                   svgSrc: "assets/icons/Product.svg",
-                  title: "Product Details",
+                  title: "Chi tiết sản phẩm",
                   press: () {
                     customModalBottomSheet(
                       context,
@@ -97,7 +178,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 ProductListTile(
                   svgSrc: "assets/icons/Delivery.svg",
-                  title: "Shipping Information",
+                  title: "Thông Tin Vận Chuyển",
                   press: () {
                     customModalBottomSheet(
                       context,
@@ -110,7 +191,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 ProductListTile(
                   svgSrc: "assets/icons/Return.svg",
-                  title: "Returns",
+                  title: "Hoàn Trả",
                   isShowBottomBorder: true,
                   press: () {
                     customModalBottomSheet(
@@ -136,7 +217,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 ProductListTile(
                   svgSrc: "assets/icons/Chat.svg",
-                  title: "Reviews",
+                  title: "Đánh Giá",
                   isShowBottomBorder: true,
                   press: () {
                     Navigator.pushNamed(context, productReviewsScreenRoute);
@@ -146,7 +227,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   padding: const EdgeInsets.all(defaultPadding),
                   sliver: SliverToBoxAdapter(
                     child: Text(
-                      "You may also like",
+                      "Bạn cũng có thể thích",
                       style: Theme.of(context).textTheme.titleSmall!,
                     ),
                   ),
@@ -188,11 +269,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               child: ProductCard(
                                 image: productData['imageURL'][0],
                                 title: productData['title'],
-                                brandName: productData['brandName'],
+                                brandName: productData['brandName'] ?? 'Couple TX',
                                 price: productData['price'].toDouble(),
                                 priceAfetDiscount:
-                                    productData['discountedPrice']?.toDouble(),
-                                dicountpercent:
+                                    productData['priceAfterDiscount']
+                                        ?.toDouble(),
+                                discountPercent:
                                     productData['discountPercentage'],
                                 press: () {
                                   Navigator.push(

@@ -17,15 +17,15 @@ class CategoryModel {
 }
 
 List<CategoryModel> demoCategories = [
-  CategoryModel(name: "All Categories"),
+  CategoryModel(name: "Tất cả sản phẩm"),
   CategoryModel(
-      name: "On Sale",
+      name: "Khuyến mãi",
       svgSrc: "assets/icons/Sale.svg",
       route: onSaleScreenRoute),
-  CategoryModel(name: "Man's", svgSrc: "assets/icons/Man.svg"),
-  CategoryModel(name: "Woman’s", svgSrc: "assets/icons/Woman.svg"),
+  CategoryModel(name: "Nam", svgSrc: "assets/icons/Man.svg"),
+  CategoryModel(name: "Nữ", svgSrc: "assets/icons/Woman.svg"),
   CategoryModel(
-      name: "Kids", svgSrc: "assets/icons/Child.svg", route: kidsScreenRoute),
+      name: "Phụ kiện", svgSrc: "assets/icons/Child.svg", route: kidsScreenRoute),
 ];
 // End For Preview
 

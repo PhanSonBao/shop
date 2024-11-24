@@ -27,12 +27,12 @@ class PopularProducts extends StatelessWidget {
         SizedBox(
           height: 220,
           child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-              .collection('Products')
-              .where('isPopular', isEqualTo: true) 
-              .snapshots(),
-              builder: (context, snapshot) {
-                 if (snapshot.connectionState == ConnectionState.waiting) {
+            stream: FirebaseFirestore.instance
+                .collection('Products')
+                .where('isPopular', isEqualTo: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -42,7 +42,7 @@ class PopularProducts extends StatelessWidget {
               final products = snapshot.data!.docs
                   .map((doc) => ProductsModel.fromDocument(doc))
                   .toList();
-               return ListView.builder(
+              return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: products.length,
                 itemBuilder: (context, index) {
@@ -50,22 +50,20 @@ class PopularProducts extends StatelessWidget {
                   return Padding(
                     padding: EdgeInsets.only(
                       left: defaultPadding,
-                      right: index == products.length - 1
-                          ? defaultPadding
-                          : 0,
+                      right: index == products.length - 1 ? defaultPadding : 0,
                     ),
                     child: ProductCard(
                       image: product.imageURL[0],
-                      brandName: product.brandName,
+                      brandName: product.brandName ?? 'Couple TX',
                       title: product.title,
                       price: product.price,
-                      priceAfetDiscount: product.priceAfetDiscount,
-                      dicountpercent: product.dicountpercent,
+                      priceAfetDiscount: product.priceAfterDiscount,
+                      discountPercent: product.discountPercent,
                       press: () {
                         Navigator.pushNamed(
                           context,
                           productDetailsScreenRoute,
-                          arguments: product,
+                          arguments: product.id,
                         );
                       },
                     ),

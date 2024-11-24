@@ -12,16 +12,16 @@ class SecondaryProductCard extends StatelessWidget {
     required this.title,
     required this.price,
     this.priceAfetDiscount,
-    this.dicountpercent,
+    this.discountPercent,
     this.press,
     this.style,
   });
+
   final String image, brandName, title;
   final double price;
   final double? priceAfetDiscount;
-  final int? dicountpercent;
+  final int? discountPercent;
   final VoidCallback? press;
-
   final ButtonStyle? style;
 
   @override
@@ -30,49 +30,53 @@ class SecondaryProductCard extends StatelessWidget {
     final formattedDiscountPrice = priceAfetDiscount != null
         ? NumberFormat("#,##0", "en_US").format(priceAfetDiscount)
         : null;
+
     return OutlinedButton(
-      onPressed: () {},
-      style: style ??
-          OutlinedButton.styleFrom(
-              minimumSize: const Size(256, 114),
-              maximumSize: const Size(256, 114),
-              padding: const EdgeInsets.all(8)),
-      child: Row(
+      onPressed: press,
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(140, 220),
+        maximumSize: const Size(140, 220),
+        padding: const EdgeInsets.all(4),
+      ),
+      child: Column(
         children: [
           AspectRatio(
             aspectRatio: 1.15,
             child: Stack(
               children: [
                 NetworkImageWithLoader(image, radius: defaultBorderRadious),
-                if (dicountpercent != null)
+                if (discountPercent != null)
                   Positioned(
-                    right: defaultPadding / 2,
-                    top: defaultPadding / 2,
+                    right: defaultPadding / 4,
+                    top: defaultPadding / 4,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding / 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       height: 16,
                       decoration: const BoxDecoration(
                         color: errorColor,
                         borderRadius: BorderRadius.all(
-                            Radius.circular(defaultBorderRadious)),
+                          Radius.circular(defaultBorderRadious),
+                        ),
                       ),
                       child: Text(
-                        "$dicountpercent% off",
+                        "$discountPercent% off",
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500),
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
-          const SizedBox(width: defaultPadding / 4),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(defaultPadding / 2),
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPadding / 4,
+                vertical: defaultPadding / 4,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -83,29 +87,23 @@ class SecondaryProductCard extends StatelessWidget {
                         .bodyMedium!
                         .copyWith(fontSize: 10),
                   ),
-                  const SizedBox(height: defaultPadding / 2),
+                  const SizedBox(
+                      height: 4), // Padding between brand name & title
                   Text(
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .titleSmall!
-                        .copyWith(fontSize: 12),
+                        .titleMedium!
+                        .copyWith(fontSize: 14),
                   ),
-                  const Spacer(),
+                  const SizedBox(
+                      height: 6), // Reduced spacing between title & price
                   priceAfetDiscount != null
-                      ? Row(
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "$formattedDiscountPrice",
-                              style: const TextStyle(
-                                color: Color(0xFF31B0D8),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(width: defaultPadding / 4),
                             Text(
                               "$formattedPrice VND",
                               style: TextStyle(
@@ -113,8 +111,19 @@ class SecondaryProductCard extends StatelessWidget {
                                     .textTheme
                                     .bodyMedium!
                                     .color,
-                                fontSize: 10,
+                                fontSize: 12,
                                 decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            const SizedBox(
+                                height:
+                                    4), // Spacing between original & discounted price
+                            Text(
+                              "$formattedDiscountPrice VND",
+                              style: const TextStyle(
+                                color: Color(0xFF31B0D8),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
                               ),
                             ),
                           ],
@@ -124,7 +133,7 @@ class SecondaryProductCard extends StatelessWidget {
                           style: const TextStyle(
                             color: Color(0xFF31B0D8),
                             fontWeight: FontWeight.w500,
-                            fontSize: 12,
+                            fontSize: 16,
                           ),
                         ),
                 ],

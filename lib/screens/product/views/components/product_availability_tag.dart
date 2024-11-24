@@ -21,10 +21,10 @@ class ProductAvailabilityTag extends StatelessWidget {
         ),
       ),
       child: Text(
-        isAvailable ? "Available in stock" : "Currently unavailable",
+        isAvailable ? "Còn hàng trong kho" : "Hiện tại hết hàng",
         style: Theme.of(context)
             .textTheme
-            .labelSmall!
+            .labelMedium!
             .copyWith(color: Colors.white, fontWeight: FontWeight.w500),
       ),
     );

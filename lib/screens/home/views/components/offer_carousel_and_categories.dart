@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import 'categories.dart';
-import 'offers_carousel.dart';
+import 'banner.dart';
 
 class OffersCarouselAndCategories extends StatelessWidget {
   const OffersCarouselAndCategories({

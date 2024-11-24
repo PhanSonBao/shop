@@ -1,9 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shop/entry_point.dart';
 
 import 'screen_export.dart';
-import 'package:shop/models/products_model.dart';
-
 // Yuo will get 50+ screens and more once you have the full template
 // 🔗 Full template: https://theflutterway.gumroad.com/l/fluttershop
 
@@ -130,8 +129,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     builder: (context) => const SetupFaceIdScreen(),
     //   );
     case productDetailsScreenRoute:
-      final product = settings.arguments as ProductsModel;
-      final productId = product.id;
+      final productId = settings.arguments as String;
       return MaterialPageRoute(
         builder: (context) => ProductDetailsScreen(productId: productId),
       );
@@ -164,12 +162,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (context) => const DiscoverScreen(),
       );
     case onSaleScreenRoute:
+    final query = settings.arguments as Query<Map<String, dynamic>>;
       return MaterialPageRoute(
-        builder: (context) => const OnSaleScreen(),
-      );
-    case kidsScreenRoute:
-      return MaterialPageRoute(
-        builder: (context) => const KidsScreen(),
+        builder: (context) => OnSaleScreen(query: query,),
       );
     case searchScreenRoute:
       return MaterialPageRoute(
@@ -200,17 +195,19 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     builder: (context) => const ChatScreen(),
     //   );
     case userInfoScreenRoute:
+    final userId = settings.arguments as String;
       return MaterialPageRoute(
-        builder: (context) => const UserInfoScreen(),
+        builder: (context) => UserInfoScreen(userId: userId),
       );
     // case currentPasswordScreenRoute:
     //   return MaterialPageRoute(
     //     builder: (context) => const CurrentPasswordScreen(),
     //   );
-    // case editUserInfoScreenRoute:
-    //   return MaterialPageRoute(
-    //     builder: (context) => const EditUserInfoScreen(),
-    //   );
+    case editUserInfoScreenRoute:
+    final userId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => EditUserInfoScreen(userId: userId),
+      );
     case notificationsScreenRoute:
       return MaterialPageRoute(
         builder: (context) => const NotificationsScreen(),

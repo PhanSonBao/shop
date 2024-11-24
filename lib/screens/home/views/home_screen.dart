@@ -6,7 +6,6 @@ import 'package:shop/route/screen_export.dart';
 
 import 'components/best_sellers.dart';
 import 'components/flash_sale.dart';
-import 'components/most_popular.dart';
 import 'components/offer_carousel_and_categories.dart';
 import 'components/popular_products.dart';
 
@@ -29,8 +28,6 @@ class HomeScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  // While loading use 
-                  // const BannerMSkelton(),‚
                   BannerSStyle1(
                     title: "SẢN PHẨM \nMỚI",
                     subtitle: "ƯU ĐÃI ĐẶC BIỆT",
@@ -44,7 +41,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SliverToBoxAdapter(child: BestSellers()),
-            const SliverToBoxAdapter(child: MostPopular()),
+            // const SliverToBoxAdapter(child: MostPopular()),
             SliverToBoxAdapter(
               child: Column(
                 children: [

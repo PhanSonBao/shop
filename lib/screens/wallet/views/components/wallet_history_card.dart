@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shop/components/product/secondary_product_card.dart';
+import 'package:shop/components/product/third_product_card.dart';
 
 import '../../../../constants.dart';
 
@@ -65,7 +65,7 @@ class WalletHistoryCard extends StatelessWidget {
                   bottom: defaultPadding,
                   left: defaultPadding,
                   right: defaultPadding),
-              child: SecondaryProductCard(
+              child: ThirdProductCard(
                 image: products[index].image,
                 brandName: products[index].brandName,
                 title: products[index].title,

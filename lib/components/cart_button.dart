@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constants.dart';
 
@@ -6,14 +7,24 @@ class CartButton extends StatelessWidget {
   const CartButton({
     super.key,
     required this.price,
-    this.title = "Buy Now",
-    this.subTitle = "Unit price",
+    this.priceAfterDiscount,
+    this.title = "Mua Ngay",
     required this.press,
   });
 
   final double price;
-  final String title, subTitle;
+  final double? priceAfterDiscount;
+  final String title;
   final VoidCallback press;
+
+  String _formatCurrency(double amount) {
+    final formatCurrency = NumberFormat.currency(
+      locale: 'vi_VN',
+      symbol: '',
+      decimalDigits: 0,
+    );
+    return "${formatCurrency.format(amount)} VND";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +56,32 @@ class CartButton extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "\$${price.toStringAsFixed(2)}",
+                            _formatCurrency(priceAfterDiscount ?? price),
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!
                                 .copyWith(color: Colors.white),
                           ),
-                          Text(
-                            subTitle,
-                            style: const TextStyle(
-                                color: Colors.white54,
-                                fontWeight: FontWeight.w500),
-                          )
+                          // Show original price crossed out if there’s a discount
+                          if (priceAfterDiscount != null)
+                            Text(
+                              _formatCurrency(price),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    color: Colors.white70,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                            ),
+                           
+                          // if(priceAfterDiscount == null)
+                          // Text(
+                          //   subTitle,
+                          //   style: const TextStyle(
+                          //       color: Colors.white54,
+                          //       fontWeight: FontWeight.w500),
+                          // )
                         ],
                       ),
                     ),

@@ -9,7 +9,7 @@ class OrderStatusCard extends StatelessWidget {
     super.key,
     required this.orderId,
     required this.placedOn,
-    this.products,
+    this.product,
     required this.orderStatus,
     required this.processingStatus,
     required this.packedStatus,
@@ -20,7 +20,7 @@ class OrderStatusCard extends StatelessWidget {
   });
 
   final String orderId, placedOn;
-  final List<Widget>? products;
+  final List<Widget>? product;
   final OrderProcessStatus orderStatus,
       processingStatus,
       packedStatus,
@@ -102,7 +102,7 @@ class OrderStatusCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: defaultPadding),
                   child: Column(
-                    children: products ?? [],
+                    children: product ?? [],
                   ),
                 )
               ],

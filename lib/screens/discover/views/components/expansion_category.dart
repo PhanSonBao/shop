@@ -1,34 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shop/route/screen_export.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../constants.dart';
+import 'package:shop/route/screen_export.dart';
 
 class ExpansionCategory extends StatelessWidget {
   const ExpansionCategory({
     super.key,
     required this.title,
     required this.subCategory,
-    required this.svgSrc,
+    required this.categoryId,
   });
 
-  final String title, svgSrc;
+  final String title;
+  final String categoryId; // Used for Firestore query
   final List subCategory;
+
+  void _onSubCategoryPressed(BuildContext context, String subCategoryTitle) {
+    // Determine the query based on the subcategory title
+    final Map<String, Map<String, dynamic>> queryMappings = {
+      "Tất cả sản phẩm": {"field": "categoryId", "value": categoryId},
+      "Tất - Vớ": {"field": "isSock", "value": true},
+      "Balo - Túi xách": {"field": "isBagpack", "value": true},
+      "Mũ - Nón": {"field": "isHat", "value": true},
+      "Áo thun nam": {"field": "isManShirt", "value": true},
+      "Quần nam": {"field": "isManPant", "value": true},
+      "Áo khoác nam": {"field": "isManJacket", "value": true},
+      "Áo thun nữ": {"field": "isWomanShirt", "value": true},
+      "Quần nữ": {"field": "isWomanPants", "value": true},
+      "Áo khoác nữ": {"field": "isWomanJacket", "value": true},
+    };
+
+    Query<Map<String, dynamic>> query;
+
+    if (queryMappings.containsKey(subCategoryTitle)) {
+      // Use the mapping to dynamically build the query
+      final field = queryMappings[subCategoryTitle]!['field'] as String;
+      final value = queryMappings[subCategoryTitle]!['value'];
+      query = FirebaseFirestore.instance
+          .collection('Products')
+          .where(field, isEqualTo: value);
+    } else {
+      // Default case: for other subcategories
+      query = FirebaseFirestore.instance
+          .collection('Products')
+          .where('subCategories', isEqualTo: subCategoryTitle);
+    }
+
+    Navigator.pushNamed(
+      context,
+      onSaleScreenRoute,
+      arguments: query,
+    );
+    debugPrint(
+        'Querying Firestore with: subCategoryTitle = $subCategoryTitle, categoryId = $categoryId');
+  }
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      iconColor: Theme.of(context).textTheme.bodyLarge!.color,
-      collapsedIconColor: Theme.of(context).textTheme.bodyMedium!.color,
-      leading: SvgPicture.asset(
-        svgSrc,
-        height: 24,
-        width: 24,
-        colorFilter: ColorFilter.mode(
-          Theme.of(context).iconTheme.color!,
-          BlendMode.srcIn,
-        ),
-      ),
       title: Text(
         title,
         style: const TextStyle(fontSize: 14),
@@ -40,11 +69,9 @@ class ExpansionCategory extends StatelessWidget {
         (index) => Column(
           children: [
             ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, onSaleScreenRoute);
-              },
+              onTap: () => _onSubCategoryPressed(context, subCategory[index]),
               title: Text(
-                subCategory[index].title,
+                subCategory[index],
                 style: const TextStyle(fontSize: 14),
               ),
             ),

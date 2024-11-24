@@ -65,7 +65,7 @@ class BannerMStyle4 extends StatelessWidget {
                     ),
                     // const SizedBox(height: defaultPadding / 4),
                     Text(
-                      "UP TO $discountParcent% OFF",
+                      "GIẢM GIÁ ĐẾN $discountParcent%",
                       style: const TextStyle(
                         fontFamily: grandisExtendedFont,
                         color: Colors.white,

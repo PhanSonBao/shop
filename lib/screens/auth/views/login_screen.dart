@@ -18,6 +18,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Check if the user is already logged in and navigate to the home screen.
+  Future<void> _checkLoginState() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      // User is already logged in, navigate to home screen
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        entryPointScreenRoute, // Replace with your home screen route
+        (route) => false,
+      );
+    }
+  }
+
   Future<void> _signIn() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -40,6 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginState(); // Check the login state when the screen initializes
   }
 
   @override

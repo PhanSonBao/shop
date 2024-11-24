@@ -12,13 +12,13 @@ class ProductCard extends StatelessWidget {
     required this.title,
     required this.price,
     this.priceAfetDiscount,
-    this.dicountpercent,
+    this.discountPercent,
     required this.press,
   });
   final String image, brandName, title;
   final double price;
   final double? priceAfetDiscount;
-  final int? dicountpercent;
+  final int? discountPercent;
   final VoidCallback press;
 
   @override
@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
             child: Stack(
               children: [
                 NetworkImageWithLoader(image, radius: defaultBorderRadious),
-                if (dicountpercent != null)
+                if (discountPercent != null)
                   Positioned(
                     right: defaultPadding / 4,
                     top: defaultPadding / 4,
@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
                             Radius.circular(defaultBorderRadious)),
                       ),
                       child: Text(
-                        "$dicountpercent% off",
+                        "$discountPercent% off",
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
